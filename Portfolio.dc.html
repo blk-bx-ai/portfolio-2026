@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Case Studies — Automation & Integration Projects | Danny Maddock</title>
+  <meta name="description" content="Real automation builds: Notion sync, lead-gen engines, Airtable migrations, legacy system integrations. See what's actually been shipped."></meta>
+  <meta property="og:title" content="Case Studies — Danny Maddock"></meta>
+  <meta property="og:description" content="Real automation builds: Notion sync, lead-gen engines, Airtable migrations, legacy system integrations."></meta>
+  <meta property="og:type" content="website"></meta>
+  <meta property="og:image" content="blk-bx-logo.svg.svg"></meta>
+  <link rel="canonical" href="https://dannymaddock.com/portfolio"></link>
+  <meta name="twitter:card" content="summary"></meta>
+  <link rel="preconnect" href="https://fonts.googleapis.com"></link>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true"></link>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"></link>
+  <style>
+    body { margin: 0; font-family: 'Outfit', -apple-system, sans-serif; letter-spacing: -0.02em; color: #111827; }
+    h1, h2, h3 { letter-spacing: -0.04em; margin: 0; }
+    a { color: oklch(58% 0.19 292); text-decoration: none; }
+    a:hover { color: oklch(50% 0.19 292); }
+  </style>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Danny Maddock",
+  "url": "https://dannymaddock.com",
+  "jobTitle": "Systems & Automation Consultant",
+  "sameAs": [
+    "https://www.upwork.com/freelancers/~01ee03b4f8411b630c",
+    "https://contra.com/danny_maddock_mg95uey0"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Brighton",
+    "addressCountry": "UK"
+  }
+}
+</script>
+</helmet>
+
+<div style="background:#fff;">
+
+  <nav style="position:sticky; top:0; z-index:100; border-bottom:1px solid rgba(17,24,39,0.08); background:rgba(255,255,255,0.85); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);">
+    <div style="max-width:1100px; margin:0 auto; padding:0 32px; height:60px; display:flex; align-items:center; justify-content:center;">
+      <ul style="display:flex; align-items:center; gap:36px; list-style:none; margin:0; padding:0; flex-wrap:wrap;">
+        <li><a href="index.html" style="font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(17,24,39,0.6);">Home</a></li>
+        <li><a href="About.dc.html" style="font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(17,24,39,0.6);">About</a></li>
+        <li><a href="Portfolio.dc.html" style="font-size:12px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#111827; padding-bottom:4px; border-bottom:2px solid oklch(58% 0.19 292);">Portfolio</a></li>
+        <li><a href="Services.dc.html" style="font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(17,24,39,0.6);">Services</a></li>
+        <li><a href="Contact.dc.html" style="font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(17,24,39,0.6);">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section style="padding:88px 0 32px; text-align:center; position:relative; z-index:1;" data-screen-label="Portfolio Header">
+    <div style="position:absolute; inset:0; background:url('blueprint-grid.jpg') center/cover no-repeat; opacity:0.15; z-index:0; pointer-events:none;"></div>
+    <div style="max-width:700px; margin:0 auto; padding:0 32px; position:relative; z-index:1;">
+      <h1 style="font-size:clamp(2.4rem,5vw,3.6rem); font-weight:700; text-transform:lowercase; margin-bottom:20px;">case <span style="color:oklch(58% 0.19 292);">studies</span></h1>
+    </div>
+  </section>
+
+  <section style="padding:64px 0 96px; position:relative; z-index:1;" data-screen-label="Case Studies">
+    <div style="position:absolute; inset:0; background:url('blueprint-grid.jpg') center/cover no-repeat; opacity:0.15; z-index:0; pointer-events:none;"></div>
+    <div style="max-width:1100px; margin:0 auto; padding:0 32px; display:flex; flex-direction:column; gap:24px; position:relative; z-index:1;">
+
+      <div style="padding:40px; background:#fff; border:1px solid rgba(17,24,39,0.08); border-radius:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+        <h3 style="font-size:1.4rem; font-weight:700; margin-bottom:14px;">Legacy System Integration</h3>
+        <p style="font-size:0.9rem; color:rgba(17,24,39,0.6); margin:0 0 16px;"><strong>Problem:</strong> A health insurance broker was spending up to two hours per PDF manually extracting data and re-entering it into a proprietary legacy system.</p>
+        <p style="font-size:0.9rem; color:rgba(17,24,39,0.6); margin:0 0 16px;"><strong>Solution:</strong> A fully self-hosted setup with a custom integration layer to extract data from incoming PDFs, generate reports, and file documents automatically - with no data leaving the client's own infrastructure.</p>
+        <p style="font-size:0.9rem; color:rgba(17,24,39,0.6); margin:0 0 20px;"><strong>Result:</strong> Full data compliance, minimal costs with no subscription fees, and 10+ hours of manual work saved each week.</p>
+        <div style="display:flex; gap:16px;">
+          <img src="n8n.svg" alt="n8n" style="height:24px; width:auto;"></img>
+        </div>
+      </div>
+
+      <div style="padding:40px; background:#fff; border:1px solid rgba(17,24,39,0.08); border-radius:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+        <h3 style="font-size:1.4rem; font-weight:700; margin-bottom:14px;">Airtable Operations &amp; Finance System</h3>
+        <p style="font-size:0.9rem; color:rgba(17,24,39,0.6); margin:0 0 16px;"><strong>Problem:</strong> An alternative provision school was running its entire operation across 12-15 Excel spreadsheets, manually entering the same data in multiple places. Nothing was connected, everything was duplicated.</p>
+        <p style="font-size:0.9rem; color:rgba(17,24,39,0.6); margin:0 0 16px;"><strong>Solution:</strong> A single Airtable system covering student sessions and timetables, staff scheduling and availability, invoicing, pay runs, and campus capacity - with operations and finance interfaces, management dashboards, and 20 automations handling the work that used to be done by hand.</p>
+        <p style="font-size:0.9rem; color:rgba(17,24,39,0.6); margin:0 0 20px;"><strong>Result:</strong> One source of truth for the entire operation, with manual data entry almost entirely eliminated.</p>
+        <div style="display:flex; align-items:center; gap:16px;">
+          <img src="airtable.svg" alt="Airtable" style="height:24px; width:auto;"></img>
+        </div>
+      </div>
+
+      <div style="padding:40px; background:#fff; border:1px solid rgba(17,24,39,0.08); border-radius:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+        <h3 style="font-size:1.4rem; font-weight:700; margin-bottom:14px;">Bi-directional Notion Sync</h3>
+        <p style="font-size:0.9rem; color:rgba(17,24,39,0.6); margin:0 0 16px;"><strong>Problem:</strong> Before Notion introduced a more granular permissions structure, a client needed each team member to work in their own private Notion workspace while the owner maintained a single source of truth across all of them.</p>
+        <p style="font-size:0.9rem; color:rgba(17,24,39,0.6); margin:0 0 16px;"><strong>Solution:</strong> Two Make scenarios built to sync data both ways via the Notion API, with strict loop prevention to ensure changes propagate without cascading or duplicating.</p>
+        <p style="font-size:0.9rem; color:rgba(17,24,39,0.6); margin:0 0 20px;"><strong>Result:</strong> Full team autonomy with centralised visibility - private workspaces, zero data conflicts.</p>
+        <div style="display:flex; gap:16px;">
+          <img src="notion.svg" alt="Notion" style="height:24px; width:auto;"></img>
+          <img src="make.svg" alt="Make" style="height:24px; width:auto;"></img>
+        </div>
+      </div>
+
+      <div style="padding:40px; background:#fff; border:1px solid rgba(17,24,39,0.08); border-radius:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+        <h3 style="font-size:1.4rem; font-weight:700; margin-bottom:14px;">End-to-End Lead Discovery System</h3>
+        <p style="font-size:0.9rem; color:rgba(17,24,39,0.6); margin:0 0 16px;"><strong>Problem:</strong> A growing agency was spending hours each week manually finding, verifying, and logging prospects before any outreach could begin.</p>
+        <p style="font-size:0.9rem; color:rgba(17,24,39,0.6); margin:0 0 16px;"><strong>Solution:</strong> A scalable lead discovery pipeline that sources prospects from public web data, verifies contact details automatically, and pushes structured records directly into the CRM - with Airtable managing the query layer and routing logic throughout.</p>
+        <p style="font-size:0.9rem; color:rgba(17,24,39,0.6); margin:0 0 20px;"><strong>Result:</strong> A fully automated research layer that runs continuously, with no manual prospecting required.</p>
+        <div style="display:flex; gap:16px;">
+          <img src="perplexity.svg" alt="Perplexity" style="height:24px; width:auto;"></img>
+          <img src="make.svg" alt="Make" style="height:24px; width:auto;"></img>
+          <img src="airtable.svg" alt="Airtable" style="height:24px; width:auto;"></img>
+          <img src="gemini.svg" alt="Gemini" style="height:24px; width:auto;"></img>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section style="padding:64px 0; border-top:1px solid rgba(17,24,39,0.08); text-align:center;">
+    <p style="font-size:1.1rem; margin:0 0 24px;">Have a system that needs fixing?</p>
+    <a href="Contact.dc.html#build" style="background:oklch(58% 0.19 292); color:#fff; display:inline-block; padding:16px 36px; border-radius:10px; font-size:15px; font-weight:600;" style-hover="background:oklch(50% 0.19 292); transform:translateY(-2px);">Let's Talk</a>
+  </section>
+
+  <footer style="border-top:1px solid rgba(17,24,39,0.08); padding:32px 0;">
+    <div style="max-width:1100px; margin:0 auto; padding:0 32px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+      <img src="blk-bx-logo.svg.svg" alt="BLK BX" style="height:36px; width:auto; object-fit:contain;"></img>
+      <p style="font-size:13px; color:rgba(17,24,39,0.65); margin:0;">© 2026 BLK BX. Built with precision.</p>
+    </div>
+  </footer>
+
+</div>
+
+</x-dc>
+</body>
+</html>
