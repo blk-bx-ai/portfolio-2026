@@ -50,15 +50,37 @@
 
   <nav style="position:sticky; top:0; z-index:100; border-bottom:1px solid rgba(17,24,39,0.08); background:rgba(255,255,255,0.85); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);">
     <div style="max-width:1100px; margin:0 auto; padding:0 32px; height:60px; display:flex; align-items:center; justify-content:center;">
-      <ul style="display:flex; align-items:center; gap:36px; list-style:none; margin:0; padding:0; flex-wrap:wrap;">
+      <ul id="nav-menu" style="display:flex; align-items:center; gap:36px; list-style:none; margin:0; padding:0; flex-wrap:wrap;">
         <li><a href="index.html" style="font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(17,24,39,0.6);">Home</a></li>
         <li><a href="About.dc.html" style="font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(17,24,39,0.6);">About</a></li>
         <li><a href="Portfolio.dc.html" style="font-size:12px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#111827; padding-bottom:4px; border-bottom:2px solid oklch(58% 0.19 292);">Portfolio</a></li>
         <li><a href="Services.dc.html" style="font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(17,24,39,0.6);">Services</a></li>
         <li><a href="Contact.dc.html" style="font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(17,24,39,0.6);">Contact</a></li>
       </ul>
+      <button id="nav-toggle" style="display:none; background:none; border:none; cursor:pointer; padding:8px; margin-left:auto;" aria-label="Toggle navigation">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
     </div>
   </nav>
+  <style>
+    @media (max-width: 768px) {
+      #nav-menu { position: absolute; top: 60px; left: 0; right: 0; flex-direction: column; gap: 0; background: #fff; border-bottom: 1px solid rgba(17,24,39,0.08); padding: 16px 32px !important; display: none; }
+      #nav-menu.open { display: flex; }
+      #nav-menu li { border-bottom: 1px solid rgba(17,24,39,0.08); padding: 12px 0; }
+      #nav-menu li:last-child { border-bottom: none; }
+      #nav-toggle { display: block !important; }
+    }
+  </style>
+  <script>
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('#nav-toggle')) return;
+      document.getElementById('nav-menu').classList.toggle('open');
+    });
+  </script>
 
   <section style="padding:88px 0 32px; text-align:center; position:relative; z-index:1;" data-screen-label="Portfolio Header">
     <div style="position:absolute; inset:0; background:url('blueprint-grid.jpg') center/cover no-repeat; opacity:0.15; z-index:0; pointer-events:none;"></div>
@@ -73,6 +95,17 @@
 
       <div style="padding:40px; background:#fff; border:1px solid rgba(17,24,39,0.08); border-radius:24px; box-shadow:0 2px 8px rgba(0,0,0,0.04);">
         <h3 style="font-size:1.4rem; font-weight:700; margin-bottom:14px;">Legacy System Integration</h3>
+        <style>
+          @media (max-width: 768px) {
+            [data-screen-label="Portfolio Header"] { padding: 48px 0 16px !important; }
+            [data-screen-label="Portfolio Header"] h1 { font-size: clamp(1.8rem, 4vw, 2.6rem) !important; padding: 0 20px; }
+            [data-screen-label="Case Studies"] { padding: 32px 0 64px !important; }
+            [data-screen-label="Case Studies"] > div { max-width: 100%; padding: 0 20px !important; }
+            [data-screen-label="Case Studies"] > div > div { padding: 24px !important; gap: 12px !important; }
+            [data-screen-label="Case Studies"] > div > div h3 { font-size: 1.1rem !important; }
+            [data-screen-label="Case Studies"] > div > div p { font-size: 0.85rem !important; }
+          }
+        </style>
         <p style="font-size:0.9rem; color:rgba(17,24,39,0.6); margin:0 0 16px;"><strong>Problem:</strong> A health insurance broker was spending up to two hours per PDF manually extracting data and re-entering it into a proprietary legacy system.</p>
         <p style="font-size:0.9rem; color:rgba(17,24,39,0.6); margin:0 0 16px;"><strong>Solution:</strong> A fully self-hosted setup with a custom integration layer to extract data from incoming PDFs, generate reports, and file documents automatically - with no data leaving the client's own infrastructure.</p>
         <p style="font-size:0.9rem; color:rgba(17,24,39,0.6); margin:0 0 20px;"><strong>Result:</strong> Full data compliance, minimal costs with no subscription fees, and 10+ hours of manual work saved each week.</p>
