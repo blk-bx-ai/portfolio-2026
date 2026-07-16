@@ -22,23 +22,25 @@ Every page is an export from a design tool (`dc-runtime`), not hand-authored sta
   - The site requires internet access to `unpkg.com` to render at all — if that CDN load fails, the page stays blank.
   - Content inside `<helmet>` (title, meta tags, JSON-LD) is injected into real `<head>` by the runtime at boot, not present as real tags in the raw HTML source.
   - `style-hover="..."` is a non-standard attribute the runtime turns into hover styling — plain CSS `:hover` in a `<style>` block won't touch these elements; use `style-hover` to match the existing pattern.
-  - No inline `<script>` other than the JSON-LD block and `support.js` itself — there's no page-specific JS (no scroll reveal, no custom nav toggle, no modal IIFEs like the old site had).
+  - One inline `<script>` per page beyond the JSON-LD block and `support.js` itself: the mobile nav-toggle handler (see Key Patterns below). **Gotcha:** `support.js` re-renders the whole `<x-dc>` template into a fresh React tree after the initial parse, which orphans any listener bound directly to a specific element (e.g. `document.getElementById('nav-toggle').addEventListener(...)`) — confirmed non-functional (click does nothing) when tested against the live runtime. Any page-specific script must bind to a stable ancestor (`document`) and look up target elements fresh inside the handler, not close over a reference captured at script-run time.
 
 ## Architecture
 
 Five pages, each a full standalone `<x-dc>` document with its own `<helmet>` (title/meta/OG/canonical/JSON-LD) and its own copy of the nav + footer (no shared partial/include mechanism):
 
-- **`index.html`** (was `Home.dc.html` — renamed so GitHub Pages serves it at `/`) — nav → hero (portrait + bio) → featured work (2 cards) → toolkit strip → footer
+- **`index.html`** (was `Home.dc.html` — renamed so GitHub Pages serves it at `/`) — nav → hero (portrait + bio) → featured work (2 cards, 2-col desktop / stacked mobile) → toolkit strip → footer
 - **`About.dc.html`** — nav → "from workbench to workflow" story (sticky heading + 3 glass cards) → CTA → footer
-- **`Portfolio.dc.html`** — nav → header → 4 case-study cards (Problem/Solution/Result format) → CTA → footer
+- **`Portfolio.dc.html`** — nav → single merged header+case-studies section ("case studies" heading centered, `blueprint-grid.jpg` background rotated 180°) → 4 case-study cards (Problem/Solution/Result format) → CTA → footer. (Was two separate sections — header and case-studies — merged into one in the July mobile-refinement pass.)
 - **`Services.dc.html`** — nav → header (watermark background text) → 3 spec blocks (self-hosted systems / Notion & Airtable / automation & integration) → 4-row toolkit grid (`#toolkit`) → CTA → footer
-- **`Contact.dc.html`** — nav → header → "Let's Build" Airtable embed (`#build`) → "Get Pricing & Process" Airtable embed (`#pricing`) → 3-pillar trust cluster → footer
+- **`Contact.dc.html`** — nav → header → 3-pillar trust cluster → "Let's Build" Airtable embed (`#build`) → "Get Pricing & Process" Airtable embed (`#pricing`) → footer. (Trust cluster used to sit below both forms; reordered above them in the July pass.)
 
 Nav links point at `index.html`, `About.dc.html`, `Portfolio.dc.html`, `Services.dc.html`, `Contact.dc.html` — the active page's link is bold `#111827` with a purple underline; inactive links are `rgba(17,24,39,0.6)`. This is set manually per file, not computed.
 
 **Known inconsistency:** `<link rel="canonical">` on each page points at a clean path (`/about`, `/portfolio`, etc.) that doesn't match the actual served filename (`About.dc.html`). Pre-existing in the export, not introduced during deploy — fix by either renaming files to clean paths (with GitHub Pages folder/`index.html` per route) or correcting the canonical tags.
 
 **Orphaned file:** `website-v2/Portfolio Current.dc.html` (in a leftover, untracked `website-v2/` folder) is an incomplete draft — missing `<title>`, meta tags, and JSON-LD — and nothing links to it. Left uncommitted; delete or finish it as needed. Same folder has a `.thumbnail` preview image, also unused.
+
+**Untracked design-handoff folders:** `design_handoff_mobile_responsive/` and `revision-16-july/` (plus matching `.zip`s) are design-tool export bundles, not part of the deployed site. Both have already been reviewed and selectively merged into the live pages (mobile breakpoints/nav toggle from the first; the Portfolio merge, Contact reorder, and extra mobile centering from the second) — not adopted wholesale, since both bundles shipped real bugs (a nav-toggle script that doesn't survive the runtime's re-render, root-relative nav links that 404 on this flat-file deploy, a stale CSS selector after a section rename). Treat any future bundle like these the same way: diff against the live pages, verify interactivity against the actual runtime before adopting, don't assume the bundle's README describes the bundle's own files (both READMEs so far have been generic/inaccurate).
 
 ## Design System
 
@@ -54,14 +56,14 @@ Nav links point at `index.html`, `About.dc.html`, `Portfolio.dc.html`, `Services
 - `body { letter-spacing: -0.02em }`, `h1,h2,h3 { letter-spacing: -0.04em }` — set per-page in each `<helmet><style>` block (identical across all five, but duplicated, not shared)
 - Wordmark (Home hero): `font-weight: 800`, lowercase, `clamp(3rem, 8vw, 7.5rem)`
 
-**Layout:** `max-width: 1100px` content container, consistent across all pages. No responsive breakpoints/media queries anywhere — layout relies entirely on `flex-wrap` and `clamp()` for responsiveness. There is no mobile nav toggle; the nav `<ul>` just wraps.
+**Layout:** `max-width: 1100px` content container, consistent across all pages. Base responsiveness comes from `flex-wrap` and `clamp()`; on top of that, every page has one or more `@media (max-width: 768px)` blocks (usually inline right after the section they affect, not consolidated in one place) that mostly re-center text and re-pad sections for mobile — see Key Patterns for the nav toggle.
 
 ## Asset Files
 
 - **`dannymaddock.png`** — Hero portrait, `220×220px` squircle (`border-radius: 24%`, `object-position: 50% 5%`) — used on `index.html` only
 - **`hero-bg.jpg`** — Hero watermark on `index.html`, `opacity: 0.12`, grayscale filter
 - **`workbench.jpg`** — Used twice: About page story section (`opacity: 0.30`) and Home "Featured Work" section as a `background-attachment: fixed` image under a white gradient overlay
-- **`blueprint-grid.jpg`** — Portfolio page background, `opacity: 0.15`, both header and case-studies sections
+- **`blueprint-grid.jpg`** — Portfolio page background, `opacity: 0.15`, rotated 180° via `transform`
 - **`brighton-chamber-logo.png`** — Contact page `// local community` pillar only, `height: 80px`
 - **`blk-bx-logo.svg.svg`** — Footer logo on every page (`height: 36px`, `object-fit: contain`) and `og:image` meta value
 - **Tool/platform logos** — flat SVGs at repo root (no `platform-logos/` subfolder in this build): `n8n, make, zapier, airtable, notion, chatgpt, claude, gemini, perplexity, google_workspace, slack, bubble, twilio, stripe, hubspot, calendly, framer, google-sheets, upwork, contra, airtable`. `fiverr.svg` and `malt.svg` exist as assets but aren't referenced by any deployed page (only by the orphaned `Portfolio Current.dc.html` draft).
@@ -71,18 +73,19 @@ Nav links point at `index.html`, `About.dc.html`, `Portfolio.dc.html`, `Services
 
 **Squircle portrait:** `border-radius: 24%` + `object-position: 50% 5%`, `220×220px` on `index.html`. Never use `50%` for portrait images.
 
-**Nav (identical structure on every page, duplicated inline):** sticky, `top:0`, `rgba(255,255,255,0.85)` + `backdrop-filter: blur(12px)`, centered `<ul>` of 5 links, `max-width:1100px`, `height:60px`.
+**Nav (identical structure on every page, duplicated inline):** sticky, `top:0`, `rgba(255,255,255,0.85)` + `backdrop-filter: blur(12px)`, centered `<ul id="nav-menu">` of 5 links, `max-width:1100px`, `height:60px`. Below 768px, `#nav-menu` collapses to `display:none` and a hamburger `<button id="nav-toggle">` (hidden on desktop) appears; clicking it toggles an `.open` class on `#nav-menu` via an inline `<script>` right after the nav. That script **must** use event delegation on `document` (`document.addEventListener('click', e => { if (!e.target.closest('#nav-toggle')) return; ... })`) rather than binding directly to `#nav-toggle` — see the Runtime gotcha above for why a direct binding silently does nothing.
 
 **Contact — Airtable embeds (replaces the old JS modal system):** No JS modals anymore — both forms are always-rendered `<iframe>` embeds directly in the page flow, jumped to via anchor (`#build`, `#pricing`) rather than opened as overlays.
 - `#build` — `https://airtable.com/embed/appexGh5PPmHRMHsE/page593ROjPaBUZFp/form`
 - `#pricing` — `https://airtable.com/embed/appexGh5PPmHRMHsE/pagishLiKFzgrW2sC/form`
 
-**Contact — Trust Cluster (3-pillar):** Single glass panel, `flex: 1` columns separated by 1px dividers.
-- **Pillar 1 — `// find me online`:** 2 links only (Upwork, Contra) — not the 4-shield grid from the old site
-- **Pillar 2 — `// direct`:** email (`danny@blkbx.uk`) + phone (`+44 7772 477 442`) as plain links, no modal trigger
+**Contact — Trust Cluster (3-pillar):** Single glass panel, `flex: 1` columns separated by 1px dividers. Sits directly under the page header, above both Airtable forms.
+- **Pillar 1 — `// direct`:** email (`danny@blkbx.uk`) + phone (`+44 7772 477 442`) as plain links, no modal trigger
+- **Pillar 2 — `// find me online`:** 2 links only (Upwork, Contra) — not the 4-shield grid from the old site
 - **Pillar 3 — `// local community`:** Brighton Chamber logo, `height: 80px`
+- Mobile: columns stack vertically and the two 1px divider `<div>`s (`:nth-child(2)`/`:nth-child(4)` of the panel) are hidden — that selector targets the dividers by position, so it survives pillar reordering without changes.
 
-**Case studies (Portfolio page):** Each card follows a fixed Problem/Solution/Result paragraph structure, ending with tool logos row. No Notion doc links or "View Documentation" pattern from the old site.
+**Case studies (Portfolio page):** Each card follows a fixed Problem/Solution/Result paragraph structure, ending with tool logos row, inside the single merged header+case-studies section described in Architecture. No Notion doc links or "View Documentation" pattern from the old site.
 
 **Services page:** 3 prose spec sections (not the old rail/dot spec-list), each with an italic one-line tagline and a `//`-prefixed bullet list, followed by a labelled 4-row toolkit grid (`#toolkit`) grouped Automation/Intelligence/Operations/Infrastructure.
 
