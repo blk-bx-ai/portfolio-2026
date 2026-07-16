@@ -16,7 +16,7 @@ Open `index.html` directly through a local static server (e.g. `python -m http.s
 
 Every page is an export from a design tool (`dc-runtime`), not hand-authored static HTML:
 
-- Each page is a `<x-dc>...</x-dc>` block sitting in `<body>`, loading `support.js` from `<head>`.
+- Each page is a `<x-dc>...</x-dc>` block sitting in `<body>`, loading `support.js` from `<head>` via `<script src="/support.js">` (root-absolute — see URL structure below for why).
 - `support.js` (64KB, **generated — do not hand-edit**; header says "Rebuild with `cd dc-runtime && bun run build`", but no `dc-runtime` source exists in this repo, so page markup must be edited directly in the `.dc.html`/`index.html` files) immediately hides the raw `<x-dc>` content (`x-dc{display:none!important}`), then loads **React 18.3.1 + ReactDOM from `unpkg.com`** (with SRI hashes), parses the `<x-dc>` template, and mounts it back into the DOM.
 - Practical implications:
   - The site requires internet access to `unpkg.com` to render at all — if that CDN load fails, the page stays blank.
@@ -28,15 +28,15 @@ Every page is an export from a design tool (`dc-runtime`), not hand-authored sta
 
 Five pages, each a full standalone `<x-dc>` document with its own `<helmet>` (title/meta/OG/canonical/JSON-LD) and its own copy of the nav + footer (no shared partial/include mechanism):
 
-- **`index.html`** (was `Home.dc.html` — renamed so GitHub Pages serves it at `/`) — nav → hero (portrait + bio) → featured work (2 cards, 2-col desktop / stacked mobile) → toolkit strip → footer
-- **`About.dc.html`** — nav → "from workbench to workflow" story (sticky heading + 3 glass cards) → CTA → footer
-- **`Portfolio.dc.html`** — nav → single merged header+case-studies section ("case studies" heading centered, `blueprint-grid.jpg` background rotated 180°) → 4 case-study cards (Problem/Solution/Result format) → CTA → footer. (Was two separate sections — header and case-studies — merged into one in the July mobile-refinement pass.)
-- **`Services.dc.html`** — nav → header (watermark background text) → 3 spec blocks (self-hosted systems / Notion & Airtable / automation & integration) → 4-row toolkit grid (`#toolkit`) → CTA → footer
-- **`Contact.dc.html`** — nav → header → 3-pillar trust cluster → "Let's Build" Airtable embed (`#build`) → "Get Pricing & Process" Airtable embed (`#pricing`) → footer. (Trust cluster used to sit below both forms; reordered above them in the July pass.)
+- **`index.html`** (repo root — serves `/`) — nav → hero (portrait + bio) → featured work (2 cards, 2-col desktop / stacked mobile) → toolkit strip → footer
+- **`about/index.html`** (serves `/about`) — nav → "from workbench to workflow" story (sticky heading + 3 glass cards) → CTA → footer
+- **`portfolio/index.html`** (serves `/portfolio`) — nav → single merged header+case-studies section ("case studies" heading centered, `blueprint-grid.jpg` background rotated 180°) → 4 case-study cards (Problem/Solution/Result format) → CTA → footer. (Was two separate sections — header and case-studies — merged into one in the July mobile-refinement pass.)
+- **`services/index.html`** (serves `/services`) — nav → header (watermark background text) → 3 spec blocks (self-hosted systems / Notion & Airtable / automation & integration) → 4-row toolkit grid (`#toolkit`) → CTA → footer
+- **`contact/index.html`** (serves `/contact`) — nav → header → 3-pillar trust cluster → "Let's Build" Airtable embed (`#build`) → "Get Pricing & Process" Airtable embed (`#pricing`) → footer. (Trust cluster used to sit below both forms; reordered above them in the July pass.)
 
-Nav links point at `index.html`, `About.dc.html`, `Portfolio.dc.html`, `Services.dc.html`, `Contact.dc.html` — the active page's link is bold `#111827` with a purple underline; inactive links are `rgba(17,24,39,0.6)`. This is set manually per file, not computed.
+**URL structure:** Each non-home page lives in its own folder as `index.html` (e.g. `about/index.html`) so GitHub Pages serves a clean path (`/about`) that matches the `<link rel="canonical">` tag already baked into each page — no more filename/canonical mismatch. Consequence: **every internal link and asset reference must be a root-absolute path** (`/about`, `/support.js`, `/n8n.svg`, `url('/workbench.jpg')`), never relative (`About.dc.html`, `./support.js`) — a relative path that works from the repo root breaks the moment it's loaded from inside `/about/`. When adding a new page, mirror this: create `<slug>/index.html`, and use `/`-prefixed paths for everything. GitHub Pages 301-redirects `/about` → `/about/` (no trailing slash → trailing slash); this is normal and matches local testing via `python -m http.server`. There are no redirects from the old flat filenames (`About.dc.html` etc.) — those now 404.
 
-**Known inconsistency:** `<link rel="canonical">` on each page points at a clean path (`/about`, `/portfolio`, etc.) that doesn't match the actual served filename (`About.dc.html`). Pre-existing in the export, not introduced during deploy — fix by either renaming files to clean paths (with GitHub Pages folder/`index.html` per route) or correcting the canonical tags.
+Nav links point at `/`, `/about`, `/portfolio`, `/services`, `/contact` — the active page's link is bold `#111827` with a purple underline; inactive links are `rgba(17,24,39,0.6)`. This is set manually per file, not computed.
 
 **Orphaned file:** `website-v2/Portfolio Current.dc.html` (in a leftover, untracked `website-v2/` folder) is an incomplete draft — missing `<title>`, meta tags, and JSON-LD — and nothing links to it. Left uncommitted; delete or finish it as needed. Same folder has a `.thumbnail` preview image, also unused.
 
@@ -58,14 +58,14 @@ Nav links point at `index.html`, `About.dc.html`, `Portfolio.dc.html`, `Services
 
 **Layout:** `max-width: 1100px` content container, consistent across all pages. Base responsiveness comes from `flex-wrap` and `clamp()`; on top of that, every page has one or more `@media (max-width: 768px)` blocks (usually inline right after the section they affect, not consolidated in one place) that mostly re-center text and re-pad sections for mobile — see Key Patterns for the nav toggle.
 
-## Asset Files
+All asset files live flat at the repo root (never duplicated into the page folders) and are referenced by every page via root-absolute paths (`/dannymaddock.png`, not `dannymaddock.png`) — see URL structure above.
 
 - **`dannymaddock.png`** — Hero portrait, `220×220px` squircle (`border-radius: 24%`, `object-position: 50% 5%`) — used on `index.html` only
 - **`hero-bg.jpg`** — Hero watermark on `index.html`, `opacity: 0.12`, grayscale filter
-- **`workbench.jpg`** — Used twice: About page story section (`opacity: 0.30`) and Home "Featured Work" section as a `background-attachment: fixed` image under a white gradient overlay
+- **`workbench.jpg`** — Used twice: About page story section (`opacity: 0.30`) and Home "Featured Work" section as a `background-attachment: fixed` image under a white gradient overlay on desktop (disabled via `background-attachment: scroll` below 768px — fixed backgrounds jump/reposition on mobile as the browser chrome resizes during scroll)
 - **`blueprint-grid.jpg`** — Portfolio page background, `opacity: 0.15`, rotated 180° via `transform`
 - **`brighton-chamber-logo.png`** — Contact page `// local community` pillar only, `height: 80px`
-- **`blk-bx-logo.svg.svg`** — Footer logo on every page (`height: 36px`, `object-fit: contain`) and `og:image` meta value
+- **`blk-bx-logo.svg.svg`** — Footer logo on every page (`height: 36px`, `object-fit: contain`); also the `og:image` meta value, which uses a *fully-qualified* URL (`https://dannymaddock.com/blk-bx-logo.svg.svg`) rather than root-relative, since OG tags are resolved by external crawlers, not the browser
 - **Tool/platform logos** — flat SVGs at repo root (no `platform-logos/` subfolder in this build): `n8n, make, zapier, airtable, notion, chatgpt, claude, gemini, perplexity, google_workspace, slack, bubble, twilio, stripe, hubspot, calendly, framer, google-sheets, upwork, contra, airtable`. `fiverr.svg` and `malt.svg` exist as assets but aren't referenced by any deployed page (only by the orphaned `Portfolio Current.dc.html` draft).
 - **`support.js`** — Generated runtime, not a design asset. Do not hand-edit (see Runtime above).
 
@@ -84,6 +84,8 @@ Nav links point at `index.html`, `About.dc.html`, `Portfolio.dc.html`, `Services
 - **Pillar 2 — `// find me online`:** 2 links only (Upwork, Contra) — not the 4-shield grid from the old site
 - **Pillar 3 — `// local community`:** Brighton Chamber logo, `height: 80px`
 - Mobile: columns stack vertically and the two 1px divider `<div>`s (`:nth-child(2)`/`:nth-child(4)` of the panel) are hidden — that selector targets the dividers by position, so it survives pillar reordering without changes.
+
+**About heading ("from workbench to workflow"):** "from" wraps above "workbench" organically (the narrow sticky-sidebar column just isn't wide enough to fit both on one line) — that's what gives the from/workbench vertical rhythm its tight, consistent spacing, governed entirely by the h2's `line-height:0.8`. "to workflow" is short enough to fit on one line on its own, so it doesn't wrap organically; to stack "to" above "workflow" on desktop *only* (mobile keeps them inline — a hard `<br>` here was tried and rejected, see git history), "to" carries a `.to-word` class that's `display:block` only at `min-width:769px`, forcing a new line box using the exact same line-height mechanism as the organic wrap. Don't reach for a `<br>` + custom `line-height` override here — it produces a visibly larger, inconsistent gap.
 
 **Case studies (Portfolio page):** Each card follows a fixed Problem/Solution/Result paragraph structure, ending with tool logos row, inside the single merged header+case-studies section described in Architecture. No Notion doc links or "View Documentation" pattern from the old site.
 
