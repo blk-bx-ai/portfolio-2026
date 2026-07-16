@@ -104,11 +104,13 @@
     </div>
     <style>
       @media (max-width: 768px) {
-        [data-screen-label="Hero"] { padding: 48px 20px 40px !important; }
+        [data-screen-label="Hero"] { padding: 48px 20px 40px !important; text-align: center !important; }
         [data-screen-label="Hero"] h1 { font-size: clamp(2rem, 6vw, 3.5rem) !important; }
-        [data-screen-label="Hero"] > div { flex-direction: column !important; gap: 32px !important; }
+        [data-screen-label="Hero"] > div { flex-direction: column !important; gap: 32px !important; align-items: center !important; }
         [data-screen-label="Hero"] .image { width: 160px !important; height: 160px !important; }
         [data-screen-label="Hero"] p { font-size: 1rem !important; }
+        [data-screen-label="Featured Work"] { text-align: center !important; }
+        [data-screen-label="Featured Work"] > div > div:first-child { justify-content: center !important; }
       }
     </style>
   </section>

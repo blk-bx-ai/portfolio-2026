@@ -91,12 +91,13 @@
         </div>
         <style>
           @media (max-width: 768px) {
-            [data-screen-label="My Story"] { padding: 40px 0 80px !important; }
-            [data-screen-label="My Story"] > div > div { grid-template-columns: 1fr !important; gap: 32px !important; }
-            [data-screen-label="My Story"] > div > div > div:first-child { position: static !important; margin-bottom: 0; }
+            [data-screen-label="My Story"] { padding: 40px 0 80px !important; text-align: center !important; }
+            [data-screen-label="My Story"] h2 { display: block !important; line-height: 1.1 !important; text-align: center !important; }
+            [data-screen-label="My Story"] > div > div { grid-template-columns: 1fr !important; gap: 32px !important; align-items: center !important; }
+            [data-screen-label="My Story"] > div > div > div:first-child { position: static !important; margin-bottom: 0; text-align: center !important; }
             [data-screen-label="My Story"] > div > div > div:first-child h2 { font-size: clamp(1.8rem, 4vw, 2.8rem) !important; }
-            [data-screen-label="My Story"] > div > div > div:last-child { display: flex; flex-direction: column; gap: 12px; }
-            [data-screen-label="My Story"] > div > div > div:last-child > div { padding: 20px 24px !important; }
+            [data-screen-label="My Story"] > div > div > div:last-child { display: flex; flex-direction: column; gap: 12px; text-align: center !important; }
+            [data-screen-label="My Story"] > div > div > div:last-child > div { padding: 20px 24px !important; text-align: left !important; }
             [data-screen-label="My Story"] > div > div > div:last-child h3 { font-size: 0.95rem !important; }
             [data-screen-label="My Story"] > div > div > div:last-child p { font-size: 0.9rem !important; }
           }
