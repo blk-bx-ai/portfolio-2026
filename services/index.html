@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="./support.js"></script>
+<script src="/support.js"></script>
 </head>
 <body>
 <x-dc>
@@ -13,7 +13,7 @@
   <meta property="og:title" content="Automation Services — Danny Maddock"></meta>
   <meta property="og:description" content="Backend automation, legacy system modernization, and rapid MVP builds. Straightforward pricing, no jargon."></meta>
   <meta property="og:type" content="website"></meta>
-  <meta property="og:image" content="blk-bx-logo.svg.svg"></meta>
+  <meta property="og:image" content="https://dannymaddock.com/blk-bx-logo.svg.svg"></meta>
   <link rel="canonical" href="https://dannymaddock.com/services"></link>
   <meta name="twitter:card" content="summary"></meta>
   <link rel="preconnect" href="https://fonts.googleapis.com"></link>
@@ -51,11 +51,11 @@
   <nav style="position:sticky; top:0; z-index:100; border-bottom:1px solid rgba(17,24,39,0.08); background:rgba(255,255,255,0.85); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);">
     <div style="max-width:1100px; margin:0 auto; padding:0 32px; height:60px; display:flex; align-items:center; justify-content:center;">
       <ul id="nav-menu" style="display:flex; align-items:center; gap:36px; list-style:none; margin:0; padding:0; flex-wrap:wrap;">
-        <li><a href="index.html" style="font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(17,24,39,0.6);">Home</a></li>
-        <li><a href="About.dc.html" style="font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(17,24,39,0.6);">About</a></li>
-        <li><a href="Portfolio.dc.html" style="font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(17,24,39,0.6);">Portfolio</a></li>
-        <li><a href="Services.dc.html" style="font-size:12px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#111827; padding-bottom:4px; border-bottom:2px solid oklch(58% 0.19 292);">Services</a></li>
-        <li><a href="Contact.dc.html" style="font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(17,24,39,0.6);">Contact</a></li>
+        <li><a href="/" style="font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(17,24,39,0.6);">Home</a></li>
+        <li><a href="/about" style="font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(17,24,39,0.6);">About</a></li>
+        <li><a href="/portfolio" style="font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(17,24,39,0.6);">Portfolio</a></li>
+        <li><a href="/services" style="font-size:12px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#111827; padding-bottom:4px; border-bottom:2px solid oklch(58% 0.19 292);">Services</a></li>
+        <li><a href="/contact" style="font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(17,24,39,0.6);">Contact</a></li>
       </ul>
       <button id="nav-toggle" style="display:none; background:none; border:none; cursor:pointer; padding:8px; margin-left:auto;" aria-label="Toggle navigation">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -156,39 +156,39 @@
         <div style="display:flex; flex-direction:column; align-items:center; gap:16px;">
           <span style="font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(17,24,39,0.5);">Automation</span>
           <div style="display:flex; align-items:center; justify-content:center; gap:48px; flex-wrap:wrap;">
-            <img src="n8n.svg" alt="n8n" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
-            <img src="make.svg" alt="Make" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
-            <img src="zapier.svg" alt="Zapier" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
+            <img src="/n8n.svg" alt="n8n" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
+            <img src="/make.svg" alt="Make" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
+            <img src="/zapier.svg" alt="Zapier" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
           </div>
         </div>
         <div style="display:flex; flex-direction:column; align-items:center; gap:16px;">
           <span style="font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(17,24,39,0.5);">Intelligence</span>
           <div style="display:flex; align-items:center; justify-content:center; gap:48px; flex-wrap:wrap;">
-            <img src="chatgpt.svg" alt="ChatGPT" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
-            <img src="claude.svg" alt="Claude" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
-            <img src="gemini.svg" alt="Gemini" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
-            <img src="perplexity.svg" alt="Perplexity" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
+            <img src="/chatgpt.svg" alt="ChatGPT" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
+            <img src="/claude.svg" alt="Claude" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
+            <img src="/gemini.svg" alt="Gemini" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
+            <img src="/perplexity.svg" alt="Perplexity" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
           </div>
         </div>
         <div style="display:flex; flex-direction:column; align-items:center; gap:16px;">
           <span style="font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(17,24,39,0.5);">Operations</span>
           <div style="display:flex; align-items:center; justify-content:center; gap:48px; flex-wrap:wrap;">
-            <img src="airtable.svg" alt="Airtable" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
-            <img src="notion.svg" alt="Notion" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
-            <img src="google_workspace.svg" alt="Google Workspace" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
-            <img src="slack.svg" alt="Slack" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
-            <img src="bubble.svg" alt="Bubble" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
+            <img src="/airtable.svg" alt="Airtable" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
+            <img src="/notion.svg" alt="Notion" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
+            <img src="/google_workspace.svg" alt="Google Workspace" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
+            <img src="/slack.svg" alt="Slack" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
+            <img src="/bubble.svg" alt="Bubble" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
           </div>
         </div>
         <div style="display:flex; flex-direction:column; align-items:center; gap:16px;">
           <span style="font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:rgba(17,24,39,0.5);">Infrastructure</span>
           <div style="display:flex; align-items:center; justify-content:center; gap:48px; flex-wrap:wrap;">
-            <img src="twilio.svg" alt="Twilio" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
-            <img src="stripe.svg" alt="Stripe" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
-            <img src="hubspot.svg" alt="HubSpot" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
-            <img src="calendly.svg" alt="Calendly" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
-            <img src="framer.svg" alt="Framer" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
-            <img src="google-sheets.svg" alt="Google Sheets" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
+            <img src="/twilio.svg" alt="Twilio" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
+            <img src="/stripe.svg" alt="Stripe" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
+            <img src="/hubspot.svg" alt="HubSpot" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
+            <img src="/calendly.svg" alt="Calendly" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
+            <img src="/framer.svg" alt="Framer" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
+            <img src="/google-sheets.svg" alt="Google Sheets" style="height:36px; width:auto; filter:grayscale(100%) opacity(50%); transition:all 0.3s;" style-hover="filter:grayscale(0%) opacity(100%);"></img>
           </div>
         </div>
       </div>
@@ -196,12 +196,12 @@
   </section>
 
   <section style="padding:64px 0; text-align:center;">
-    <a href="Contact.dc.html#pricing" style="background:oklch(58% 0.19 292); color:#fff; display:inline-block; padding:16px 36px; border-radius:10px; font-size:15px; font-weight:600;" style-hover="background:oklch(50% 0.19 292); transform:translateY(-2px);">Get Pricing &amp; Process</a>
+    <a href="/contact#pricing" style="background:oklch(58% 0.19 292); color:#fff; display:inline-block; padding:16px 36px; border-radius:10px; font-size:15px; font-weight:600;" style-hover="background:oklch(50% 0.19 292); transform:translateY(-2px);">Get Pricing &amp; Process</a>
   </section>
 
   <footer style="border-top:1px solid rgba(17,24,39,0.08); padding:32px 0;">
     <div style="max-width:1100px; margin:0 auto; padding:0 32px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
-      <img src="blk-bx-logo.svg.svg" alt="BLK BX" style="height:36px; width:auto; object-fit:contain;"></img>
+      <img src="/blk-bx-logo.svg.svg" alt="BLK BX" style="height:36px; width:auto; object-fit:contain;"></img>
       <p style="font-size:13px; color:rgba(17,24,39,0.65); margin:0;">© 2026 BLK BX. Built with precision.</p>
     </div>
   </footer>
