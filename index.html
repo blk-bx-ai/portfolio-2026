@@ -45,6 +45,18 @@
 .skip-link:focus { top: 12px; }
 :focus-visible { outline: 3px solid oklch(58% 0.19 292); outline-offset: 3px; }
 </style>
+<!-- Hero background: responsive WebP with the original JPEG as fallback. Preload media ranges must match the CSS breakpoints below exactly, or a browser can fetch two variants. -->
+<link rel="preload" as="image" type="image/webp" href="/hero-bg-800.webp" media="(max-width: 599.98px)">
+<link rel="preload" as="image" type="image/webp" href="/hero-bg-1280.webp" media="(min-width: 600px) and (max-width: 899.98px)">
+<link rel="preload" as="image" type="image/webp" href="/hero-bg-1600.webp" media="(min-width: 900px) and (max-width: 1599.98px)">
+<link rel="preload" as="image" type="image/webp" href="/hero-bg-2400.webp" media="(min-width: 1600px)">
+<style>
+.hero-bg { background: url('/hero-bg.jpg') center / cover no-repeat; }
+.hero-bg { background-image: image-set(url('/hero-bg-800.webp') type('image/webp'), url('/hero-bg.jpg') type('image/jpeg')); }
+@media (min-width: 600px) { .hero-bg { background-image: image-set(url('/hero-bg-1280.webp') type('image/webp'), url('/hero-bg.jpg') type('image/jpeg')); } }
+@media (min-width: 900px) { .hero-bg { background-image: image-set(url('/hero-bg-1600.webp') type('image/webp'), url('/hero-bg.jpg') type('image/jpeg')); } }
+@media (min-width: 1600px) { .hero-bg { background-image: image-set(url('/hero-bg-2400.webp') type('image/webp'), url('/hero-bg.jpg') type('image/jpeg')); } }
+</style>
 <script src="/support.js"></script>
 <script defer src="https://cloud.umami.is/script.js" data-website-id="dac5d32b-0af2-4e4a-9d23-ffa6eaa5a9c3"></script>
 </head>
@@ -92,7 +104,7 @@
   </script>
 
   <section id="main-content" style="padding:88px 40px 64px; display:flex; flex-direction:column; align-items:center; position:relative; z-index:1;" data-screen-label="Hero">
-    <div style="position:absolute; inset:0; background:url('/hero-bg.jpg') center/cover no-repeat; opacity:0.12; z-index:0; pointer-events:none; filter:grayscale(100%);"></div>
+    <div class="hero-bg" style="position:absolute; inset:0; opacity:0.12; z-index:0; pointer-events:none; filter:grayscale(100%);"></div>
     <h1 style="text-align:center; line-height:0.9; position:relative; z-index:1;">
       <span style="font-size:clamp(3rem,8vw,7.5rem); font-weight:800; letter-spacing:-0.04em; text-transform:lowercase;"><span style="color:#111827;">danny</span><span style="color:oklch(58% 0.19 292);">maddock</span></span>
     </h1>
