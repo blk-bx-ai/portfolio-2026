@@ -15,7 +15,7 @@
   var navNum = document.querySelector('[data-nav="num"]');
   var navName = document.querySelector('[data-nav="name"]');
   var navDesc = document.querySelector('[data-nav="desc"]');
-  var hot = null, navI = 0, navTimer = null;
+  var hot = null, navI = 0, navOpenedAt = 0;
 
   function setHot(k) {
     hot = k;
@@ -30,15 +30,22 @@
     if (navName) navName.textContent = NAV[navI][0];
     if (navDesc) navDesc.textContent = NAV[navI][1];
   }
-  function stopNav() { if (navTimer) { clearInterval(navTimer); navTimer = null; } }
-  function startNav() {
-    if (navTimer && hot === 'nav') return;
-    stopNav();
+  // The sidebar only changes when the visitor asks: opening shows interface 1,
+  // each further activation of the same "+" steps to the next one.
+  function openNav() {
+    if (hot === 'nav') return;
     navI = 0; renderNav(); setHot('nav');
-    navTimer = setInterval(function () { navI = (navI + 1) % NAV.length; renderNav(); }, 2800);
+    navOpenedAt = performance.now();
   }
-  function on(k) { if (k === 'nav') startNav(); else { stopNav(); setHot(k); } }
-  function off() { stopNav(); setHot(null); }
+  function nextNav() {
+    // A tap fires mouseenter/focus and click together; don't let that single
+    // gesture both open the panel and skip past interface 1.
+    if (hot !== 'nav') { openNav(); return; }
+    if (performance.now() - navOpenedAt < 400) return;
+    navI = (navI + 1) % NAV.length; renderNav();
+  }
+  function on(k) { if (k === 'nav') openNav(); else setHot(k); }
+  function off() { setHot(null); }
 
   document.querySelectorAll('.hs[data-hot]').forEach(function (btn) {
     var k = btn.dataset.hot;
@@ -46,7 +53,7 @@
     btn.addEventListener('focus', function () { on(k); });
     btn.addEventListener('mouseleave', off);
     btn.addEventListener('blur', off);
-    btn.addEventListener('click', function () { on(k); });
+    btn.addEventListener('click', function () { if (k === 'nav') nextNav(); else on(k); });
   });
 
   /* ---- timetable: hide the scroll hint once the viewer scrolls ---- */

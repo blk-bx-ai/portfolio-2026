@@ -82,27 +82,28 @@
     .sb-icon { position:relative; width:15px; height:12px; border:1.5px solid #8e8e93; border-radius:3px; }
     .sb-icon::after { content:""; position:absolute; left:3px; top:0; bottom:0; width:1.5px; background:#8e8e93; }
     .tab { margin-left:18px; display:flex; align-items:center; gap:8px; height:28px; padding:0 12px; min-width:0; max-width:300px; background:#3a3a3d; border-radius:7px; box-shadow:inset 0 0 0 .5px rgba(255,255,255,.08); }
-    .tab img { width:13px; height:13px; flex:0 0 auto; }
+    .tab img { width:13px; height:auto; flex:0 0 auto; }
     .tab span { font-size:12px; color:#e5e5ea; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .newtab { margin-left:12px; color:#8e8e93; font-size:17px; line-height:1; }
     .mac-right { margin-left:auto; padding-left:12px; display:flex; align-items:center; gap:14px; color:#8e8e93; font-size:12px; white-space:nowrap; }
     .share { display:inline-flex; align-items:center; height:22px; padding:0 9px; border-radius:5px; background:#3a3a3d; color:#e5e5ea; }
-    .more { letter-spacing:2px; }
+    .more { letter-spacing:2px; color:#929297; }
     .mac.mini { border-radius:10px; box-shadow:0 0 0 1px #000,inset 0 0 0 1px rgba(255,255,255,.12),0 28px 60px -16px rgba(17,24,39,.55); }
     .mini .mac-bar { height:32px; padding:0 10px 0 11px; }
     .mini .lights { gap:6px; }
     .mini .lights i { width:9px; height:9px; }
     .mini .mac-nav { gap:10px; margin-left:16px; font-size:13px; }
     .mini .tab { margin-left:12px; gap:6px; height:22px; padding:0 10px; border-radius:6px; }
-    .mini .tab img { width:11px; height:11px; }
+    .mini .tab img { width:11px; height:auto; }
     .mini .tab span { font-size:11px; }
-    .mini .more { margin-left:auto; padding-left:10px; color:#8e8e93; font-size:11px; }
+    .mini .more { margin-left:auto; padding-left:10px; font-size:11px; }
     .screen { position:relative; overflow:hidden; background:#fff; }
-    .crop img, img.crop { position:absolute; max-width:none; height:auto; }
+    .crop > img { position:absolute; max-width:none; height:auto; }
 
     /* hotspots + overlays */
     .hs { position:absolute; z-index:3; transform:translate(-50%,-50%); width:30px; height:30px; padding:0; border-radius:50%; background:var(--purple); color:#fff; border:3px solid #fff; box-shadow:0 0 0 4px oklch(58% 0.19 292 / .22),0 6px 16px rgba(17,24,39,.3); font:500 18px/1 'Outfit',sans-serif; display:grid; place-items:center; cursor:pointer; transition:opacity .18s ease,background .15s ease; }
     .hs:hover { background:var(--purple-dk); }
+    .hs::before { content:""; position:absolute; left:50%; top:50%; width:44px; height:44px; transform:translate(-50%,-50%); border-radius:50%; }
     .hs.is-off { opacity:0; pointer-events:none; }
     .fade { opacity:0; transition:opacity .18s ease; pointer-events:none; }
     .fade.is-on { opacity:1; }
@@ -132,6 +133,7 @@
     .navcard-bars span { flex:1; height:3px; border-radius:2px; background:rgba(17,24,39,.12); transition:background .3s ease; }
     .navcard-bars span.is-on { background:var(--purple); }
     .navcard-foot { margin-top:10px; font-size:12px; color:var(--muted); }
+    .navcard-hint { margin-top:6px; font-family:var(--mono); font-size:11px; color:var(--muted); }
 
     /* timetable */
     .tt { position:relative; }
@@ -168,7 +170,7 @@
     .dark .tray { background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.1); }
     .dark .mac { box-shadow:0 0 0 1px #000,inset 0 0 0 1px rgba(255,255,255,.12),0 30px 80px -20px rgba(0,0,0,.7); }
     .trace-lead { margin:28px 0 0; max-width:36em; font-size:1.05rem; line-height:1.7; color:#c4c8d0; }
-    .inv .mac-bar .more { margin-left:auto; color:#8e8e93; font-size:12px; }
+    .inv .mac-bar .more { margin-left:auto; font-size:12px; }
     .inv .hl { border-radius:6px; box-shadow:0 0 0 4px oklch(58% 0.19 292 / .18); }
     .connector { position:relative; max-width:640px; height:96px; --x:calc(14px + (100% - 28px) * .26); }
     .connector i { position:absolute; left:var(--x); top:0; bottom:0; width:2px; background:repeating-linear-gradient(to bottom,var(--purple) 0 6px,transparent 6px 11px); }
@@ -222,8 +224,9 @@
     @media (max-width:699px) {
       .wrap { padding:0 20px; }
       .hs { width:24px; height:24px; font-size:16px; }
-      .pill { max-width:72%; padding:5px 10px; border-radius:10px; font-size:11px; line-height:1.35; white-space:normal; }
-      .pill.long { width:72%; padding:6px 10px; }
+      .pill { max-width:72%; padding:4px 10px; border-radius:10px; font-size:11px; line-height:1.25; white-space:normal; }
+      .pill.long { left:4% !important; width:92%; max-width:none; padding:6px 10px; }
+      .connector span { right:0; white-space:normal; }
       .navcard { display:none; }
       .tt-scroll { aspect-ratio:auto; overflow-y:visible; }
       .scroll-hint { display:none; }
@@ -318,6 +321,7 @@
                 <div class="navcard-desc" data-nav="desc">6 pages — a timetable per campus, the farm school diary and the student pipeline.</div>
                 <div class="navcard-bars"><span class="is-on"></span><span></span><span></span><span></span></div>
                 <div class="navcard-foot">29 pages · one base underneath</div>
+                <div class="navcard-hint"><span class="verb-hover">click</span><span class="verb-touch">tap</span> + again for the next interface</div>
               </div>
             </div>
 
@@ -329,9 +333,9 @@
                 <span class="newtab">+</span>
                 <span class="mac-right"><span class="share">Share</span><span class="more">···</span></span>
               </div>
-              <div class="screen" style="aspect-ratio:1912/865">
+              <div class="screen" style="aspect-ratio:1912/865;overflow:visible">
                 <img src="/airtable-ops-01-student-pipeline.webp" width="1912" height="865" alt="Airtable student pipeline with enquiry, onboarding, active, not proceeded and exited columns" fetchpriority="high" decoding="async" style="display:block;width:100%;height:100%;object-fit:cover;object-position:left top">
-                <div class="pop" data-show="record" style="left:2%;top:3%;width:58%" aria-hidden="true">
+                <div class="pop" data-show="record" style="left:2%;top:3%;width:min(58%,calc(63.26% - 47.6px))" aria-hidden="true">
                   <div class="mac mini">
                     <div class="mac-bar">
                       <span class="lights"><i></i><i></i><i></i></span>
@@ -346,7 +350,7 @@
                 </div>
                 <div class="hl fade" data-show="campus" style="left:15.4%;top:6%;width:26.4%;height:6.4%;border-radius:6px"></div>
                 <div class="pill fade" data-show="campus" style="left:15.4%;top:14.4%">Tabs per campus for filtered views</div>
-                <button type="button" class="hs" data-hot="nav" aria-label="Show interfaces in the sidebar" style="left:10.5%;top:64%">+</button>
+                <button type="button" class="hs" data-hot="nav" aria-label="Show interfaces in the sidebar; activate again for the next interface" style="left:10.5%;top:64%">+</button>
                 <button type="button" class="hs" data-hot="campus" data-hide-on="record nav" aria-label="Show campus views" style="left:45%;top:9.8%">+</button>
                 <button type="button" class="hs" data-hot="record" aria-label="Open student details view" style="left:60.8%;top:65.3%">+</button>
               </div>
@@ -382,10 +386,10 @@
                 <span class="mac-right"><span class="share">Share</span><span class="more">···</span></span>
               </div>
               <div class="tt">
-                <div class="tt-scroll" tabindex="0" aria-label="Student sessions and staff timetable, scrollable">
+                <div class="tt-scroll" role="region" tabindex="0" aria-label="Student sessions and staff timetable, scrollable">
                   <div class="screen crop" style="aspect-ratio:1490/760">
                     <img src="/airtable-ops-student-sessions.webp" width="1909" height="856" alt="AM Sessions – Oakridge week view; each booking shows student and staff member" loading="lazy" style="left:-26.2%;top:-9.2%;width:128.1%">
-                    <div class="pop" data-show="session" style="left:46%;top:2%;width:46%" aria-hidden="true">
+                    <div class="pop" data-show="session" style="left:46%;top:2%;width:min(46%,calc(55.19% - 36px))" aria-hidden="true">
                       <div class="mac mini">
                         <div class="mac-bar">
                           <span class="lights"><i></i><i></i><i></i></span>
