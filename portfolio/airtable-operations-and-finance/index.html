@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Airtable Operations and Finance System — Case Study | Danny Maddock</title>
+  <meta name="description" content="How an alternative provision school replaced more than 12 spreadsheets with a client-owned Airtable system for scheduling, sessions, invoicing and staff pay across four campuses.">
+  <link rel="canonical" href="https://dannymaddock.com/portfolio/airtable-operations-and-finance/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Airtable Operations and Finance System — Danny Maddock">
+  <meta property="og:description" content="A connected, client-owned Airtable system for an alternative provision school's operations and finance across four campuses.">
+  <meta property="og:url" content="https://dannymaddock.com/portfolio/airtable-operations-and-finance/">
+  <meta property="og:image" content="https://dannymaddock.com/blk-bx-logo.svg.svg">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="/blk-bx-logo.svg.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root { color-scheme:light; --ink:#111827; --muted:#4b5563; --purple:oklch(58% 0.19 292); --purple-dk:oklch(50% 0.19 292); --purple-lt:oklch(74% 0.14 292); --line:rgba(17,24,39,.1); --mono:'IBM Plex Mono',ui-monospace,monospace; --sys:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; font-family:'Outfit',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; letter-spacing:-.02em; color:var(--ink); background:#fff; overflow-x:hidden; }
+    h1,h2,h3 { letter-spacing:-.04em; }
+    a { color:var(--ink); text-decoration:none; }
+    a:hover { color:var(--purple-dk); }
+    button { font:inherit; }
+    :focus-visible { outline:3px solid var(--purple); outline-offset:3px; }
+    .skip-link { position:absolute; left:16px; top:-80px; z-index:1000; padding:12px 16px; border-radius:8px; background:var(--ink); color:#fff; font-weight:700; }
+    .skip-link:focus { top:12px; color:#fff; }
+
+    /* site nav (shared markup with the rest of the site) */
+    .site-nav { position:sticky; top:0; z-index:100; border-bottom:1px solid var(--line); background:rgba(255,255,255,.9); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
+    .nav-inner { max-width:1100px; height:60px; padding:0 32px; margin:auto; display:flex; align-items:center; justify-content:center; }
+    .nav-list { display:flex; align-items:center; gap:36px; list-style:none; margin:0; padding:0; }
+    .nav-list a,.mobile-links a { font-size:12px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:rgba(17,24,39,.68); }
+    .nav-list a[aria-current="location"],.mobile-links a[aria-current="location"] { color:var(--ink); font-weight:700; border-bottom:2px solid var(--purple); padding-bottom:4px; }
+    .mobile-nav { display:none; }
+
+    /* layout */
+    .wrap { max-width:1100px; margin:0 auto; padding:0 32px; }
+    .row { display:flex; flex-wrap:wrap; gap:20px 48px; }
+    .rail { flex:1 1 160px; max-width:200px; min-height:40px; }
+    .content { flex:999 1 560px; min-width:0; }
+    .mono { font-family:var(--mono); font-size:11px; letter-spacing:.02em; color:var(--muted); }
+    .stop-label { display:flex; align-items:flex-start; gap:12px; }
+    .stop-label::before { content:""; flex:0 0 auto; width:9px; height:9px; margin-top:5px; background:var(--purple); }
+    .stop-label span { font-family:var(--mono); font-size:11px; letter-spacing:.02em; color:var(--muted); line-height:1.6; }
+    .dark .stop-label span { color:#9ca3af; }
+    .purple { color:var(--purple); }
+    .stop-title { margin:0; font-size:1.5rem; font-weight:700; text-transform:lowercase; }
+    .stop-copy { margin:12px 0 0; max-width:36em; line-height:1.65; color:var(--muted); text-wrap:pretty; }
+    .h2 { margin:0; font-size:clamp(2rem,4.2vw,2.75rem); font-weight:700; line-height:1.08; text-transform:lowercase; max-width:18ch; }
+
+    /* hero */
+    .hero { padding:28px 0 0; }
+    .breadcrumb { display:flex; flex-wrap:wrap; gap:9px; font-size:13px; color:var(--muted); }
+    .breadcrumb a { color:var(--muted); font-weight:600; }
+    .hero-rail { padding-top:14px; display:flex; flex-direction:column; justify-content:space-between; gap:48px; }
+    .pile { position:relative; width:150px; height:96px; }
+    .sheet { position:absolute; width:96px; height:58px; border:1px solid rgba(17,24,39,.3); box-shadow:0 2px 6px -2px rgba(17,24,39,.2); background:linear-gradient(rgba(17,24,39,.07),rgba(17,24,39,.07)) 0 0/100% 11px no-repeat,repeating-linear-gradient(to bottom,transparent 0 10px,rgba(17,24,39,.15) 10px 11px),repeating-linear-gradient(to right,transparent 0 23px,rgba(17,24,39,.15) 23px 24px),#fff; }
+    .before-list { margin-top:14px; line-height:1.7; }
+    .before-list span { color:#6b7280; }
+    .hero h1 { margin:0; font-size:clamp(2.6rem,6.2vw,5.4rem); font-weight:800; line-height:.95; text-transform:lowercase; max-width:14ch; text-wrap:balance; }
+    .hero-meta { display:flex; flex-wrap:wrap; gap:32px 56px; margin-top:32px; align-items:flex-start; }
+    .intro { flex:3 1 340px; margin:0; font-size:clamp(1.08rem,1.5vw,1.25rem); line-height:1.6; color:#374151; max-width:34em; text-wrap:pretty; }
+    .facts { flex:2 1 240px; margin:0; display:grid; grid-template-columns:auto 1fr; gap:9px 20px; font-size:14px; line-height:1.4; border-top:1px solid var(--ink); padding-top:14px; }
+    .facts dt { font-family:var(--mono); font-size:11px; color:var(--muted); padding-top:2px; }
+    .facts dd { margin:0; }
+
+    /* mac window */
+    .tray { position:relative; padding:14px; background:#f4f3f0; border:1px solid rgba(17,24,39,.08); border-radius:22px; }
+    .tray.warm { background:#efeee9; }
+    .mac { border-radius:12px; overflow:hidden; background:#2a2a2d; box-shadow:0 0 0 1px #000,inset 0 0 0 1px rgba(255,255,255,.12),0 30px 80px -20px rgba(17,24,39,.55),0 10px 24px -12px rgba(17,24,39,.4); }
+    .mac-bar { height:40px; display:flex; align-items:center; padding:0 12px 0 14px; font-family:var(--sys); letter-spacing:0; border-bottom:1px solid #000; }
+    .lights { display:flex; flex:0 0 auto; gap:8px; }
+    .lights i { width:12px; height:12px; border-radius:50%; background:#ff5f57; box-shadow:inset 0 0 0 .5px rgba(0,0,0,.35); }
+    .lights i:nth-child(2) { background:#febc2e; }
+    .lights i:nth-child(3) { background:#28c840; }
+    .mac-nav { display:flex; flex:0 0 auto; align-items:center; gap:14px; margin-left:22px; color:#8e8e93; font-size:15px; line-height:1; }
+    .mac-nav .dim { color:#5a5a5e; }
+    .sb-icon { position:relative; width:15px; height:12px; border:1.5px solid #8e8e93; border-radius:3px; }
+    .sb-icon::after { content:""; position:absolute; left:3px; top:0; bottom:0; width:1.5px; background:#8e8e93; }
+    .tab { margin-left:18px; display:flex; align-items:center; gap:8px; height:28px; padding:0 12px; min-width:0; max-width:300px; background:#3a3a3d; border-radius:7px; box-shadow:inset 0 0 0 .5px rgba(255,255,255,.08); }
+    .tab img { width:13px; height:13px; flex:0 0 auto; }
+    .tab span { font-size:12px; color:#e5e5ea; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .newtab { margin-left:12px; color:#8e8e93; font-size:17px; line-height:1; }
+    .mac-right { margin-left:auto; padding-left:12px; display:flex; align-items:center; gap:14px; color:#8e8e93; font-size:12px; white-space:nowrap; }
+    .share { display:inline-flex; align-items:center; height:22px; padding:0 9px; border-radius:5px; background:#3a3a3d; color:#e5e5ea; }
+    .more { letter-spacing:2px; }
+    .mac.mini { border-radius:10px; box-shadow:0 0 0 1px #000,inset 0 0 0 1px rgba(255,255,255,.12),0 28px 60px -16px rgba(17,24,39,.55); }
+    .mini .mac-bar { height:32px; padding:0 10px 0 11px; }
+    .mini .lights { gap:6px; }
+    .mini .lights i { width:9px; height:9px; }
+    .mini .mac-nav { gap:10px; margin-left:16px; font-size:13px; }
+    .mini .tab { margin-left:12px; gap:6px; height:22px; padding:0 10px; border-radius:6px; }
+    .mini .tab img { width:11px; height:11px; }
+    .mini .tab span { font-size:11px; }
+    .mini .more { margin-left:auto; padding-left:10px; color:#8e8e93; font-size:11px; }
+    .screen { position:relative; overflow:hidden; background:#fff; }
+    .crop img, img.crop { position:absolute; max-width:none; height:auto; }
+
+    /* hotspots + overlays */
+    .hs { position:absolute; z-index:3; transform:translate(-50%,-50%); width:30px; height:30px; padding:0; border-radius:50%; background:var(--purple); color:#fff; border:3px solid #fff; box-shadow:0 0 0 4px oklch(58% 0.19 292 / .22),0 6px 16px rgba(17,24,39,.3); font:500 18px/1 'Outfit',sans-serif; display:grid; place-items:center; cursor:pointer; transition:opacity .18s ease,background .15s ease; }
+    .hs:hover { background:var(--purple-dk); }
+    .hs.is-off { opacity:0; pointer-events:none; }
+    .fade { opacity:0; transition:opacity .18s ease; pointer-events:none; }
+    .fade.is-on { opacity:1; }
+    .hl { position:absolute; z-index:2; border:2px solid var(--purple); border-radius:5px; background:oklch(58% 0.19 292 / .08); box-shadow:0 0 0 4px oklch(58% 0.19 292 / .15); }
+    .pill { position:absolute; z-index:2; background:#fff; color:var(--ink); border:1px solid rgba(17,24,39,.14); box-shadow:0 8px 24px -8px rgba(17,24,39,.35); border-radius:999px; padding:7px 14px; font-size:13px; font-weight:600; white-space:nowrap; }
+    .pill.long { border-radius:10px; padding:9px 14px; line-height:1.4; white-space:normal; width:min(360px,60%); text-wrap:pretty; }
+    .pop { position:absolute; z-index:2; pointer-events:none; opacity:0; transform:translateY(10px) scale(.98); transition:opacity .22s ease,transform .22s ease; }
+    .pop.is-on { opacity:1; transform:none; }
+    .hint { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px 24px; margin-top:16px; padding:0 4px; font-family:var(--mono); font-size:13px; color:#374151; }
+    .hint > span:first-child { display:inline-flex; align-items:center; gap:9px; }
+    .hint .fictional { font-size:11px; color:#6b7280; }
+    .hint-dot { width:24px; height:24px; border-radius:50%; background:var(--purple); color:#fff; border:2px solid #fff; box-shadow:0 0 0 3px oklch(58% 0.19 292 / .22),0 3px 8px rgba(17,24,39,.25); display:inline-grid; place-items:center; font:500 15px/1 'Outfit',sans-serif; }
+    .verb-touch { display:none; }
+    @media (hover:none) { .verb-hover { display:none; } .verb-touch { display:inline; } }
+
+    /* sidebar interface pop-out */
+    .navpop { position:absolute; left:-10px; top:50%; height:120%; display:flex; align-items:flex-start; gap:20px; z-index:5; pointer-events:none; transform-origin:12% center; opacity:0; transform:translateY(-50%) scale(.9); transition:opacity .25s ease,transform .3s cubic-bezier(.2,.8,.2,1); }
+    .navpop.is-on { opacity:1; transform:translateY(-50%) scale(1); }
+    .navpop-shot { position:relative; flex:0 0 auto; height:100%; aspect-ratio:352/832; background:rgb(22,110,225); border-radius:12px; overflow:hidden; box-shadow:0 0 0 1px rgba(17,24,39,.25),0 40px 80px -24px rgba(17,24,39,.6),0 12px 28px -12px rgba(17,24,39,.4); }
+    .navpop-shot img { position:absolute; left:0; top:0; max-width:none; height:auto; opacity:0; transition:opacity .6s ease; }
+    .navpop-shot img.is-on { opacity:1; }
+    .navcard { flex:0 1 300px; min-width:0; margin-top:56px; background:#fff; color:var(--ink); border:1px solid rgba(17,24,39,.14); box-shadow:0 8px 24px -8px rgba(17,24,39,.35); border-radius:10px; padding:12px 14px; }
+    .navcard-num { font-family:var(--mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--purple-dk); }
+    .navcard-name { margin-top:4px; font-size:15px; font-weight:700; }
+    .navcard-desc { margin-top:2px; font-size:13px; line-height:1.4; color:var(--muted); }
+    .navcard-bars { display:flex; gap:4px; margin-top:10px; }
+    .navcard-bars span { flex:1; height:3px; border-radius:2px; background:rgba(17,24,39,.12); transition:background .3s ease; }
+    .navcard-bars span.is-on { background:var(--purple); }
+    .navcard-foot { margin-top:10px; font-size:12px; color:var(--muted); }
+
+    /* timetable */
+    .tt { position:relative; }
+    .tt-scroll { position:relative; aspect-ratio:1490/760; overflow-y:auto; overscroll-behavior:auto; background:#fff; }
+    .tt-divider { height:1px; background:rgba(17,24,39,.1); }
+    .scroll-hint { position:absolute; left:50%; bottom:14px; transform:translateX(-50%); z-index:4; pointer-events:none; display:inline-flex; align-items:center; gap:8px; padding:7px 14px; border-radius:999px; background:rgba(17,24,39,.86); color:#fff; font-family:var(--mono); font-size:11px; white-space:nowrap; transition:opacity .2s ease; }
+    .tt.scrolled .scroll-hint { opacity:0; }
+
+    /* generator */
+    .gen-head { display:flex; flex-wrap:wrap; gap:24px 48px; align-items:flex-end; }
+    .gen-num { flex:0 0 auto; font-size:clamp(5rem,12vw,9.5rem); font-weight:800; line-height:.82; letter-spacing:-.06em; font-variant-numeric:tabular-nums; }
+    .gen-panel { margin-top:48px; padding:20px; background:#f4f3f0; border:1px solid rgba(17,24,39,.08); border-radius:22px; display:flex; flex-wrap:wrap; gap:20px; }
+    .gen-card { min-width:0; background:#fff; border:1px solid rgba(17,24,39,.12); border-radius:12px; }
+    .gen-ctrl { flex:1 1 240px; padding:20px; display:flex; flex-direction:column; gap:14px; box-shadow:0 12px 30px -18px rgba(17,24,39,.35); }
+    .gen-field-label { font-size:13px; font-weight:600; margin-bottom:6px; letter-spacing:0; }
+    .gen-select { height:40px; display:flex; align-items:center; justify-content:space-between; padding:0 12px; border:1px solid rgba(17,24,39,.18); border-radius:8px; font-size:14px; letter-spacing:0; }
+    .gen-select span { color:#6b7280; }
+    .gen-btn { height:46px; border:0; border-radius:8px; background:rgb(22,110,225); color:#fff; font:600 15px/1 'Outfit',sans-serif; letter-spacing:0; cursor:pointer; box-shadow:0 0 0 4px oklch(58% 0.19 292 / 0); transition:background .15s ease,box-shadow .2s ease; }
+    .gen-btn:hover { background:rgb(14,92,196); }
+    .gen-btn.rerun { box-shadow:0 0 0 4px oklch(58% 0.19 292 / .3); }
+    .gen-log { display:flex; align-items:center; gap:8px; font-family:var(--mono); font-size:12px; color:#374151; min-height:18px; }
+    .gen-dot { flex:0 0 auto; width:8px; height:8px; border-radius:50%; background:#9ca3af; }
+    .gen-grid-card { flex:2 1 320px; padding:16px 16px 18px; }
+    .gen-grid-head { display:flex; justify-content:space-between; gap:12px; margin-bottom:10px; }
+    .gen-days,.gen-cells { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:4px; }
+    .gen-days { font-family:var(--mono); font-size:10px; color:#6b7280; margin-bottom:6px; }
+    .gen-cells span { height:14px; border-radius:3px; border:1px dashed rgba(17,24,39,.14); background:transparent; transform:scale(.6); transition:background .18s ease,transform .25s cubic-bezier(.2,.8,.2,1); }
+    .gen-cells span.is-on { border-color:transparent; transform:scale(1); }
+
+    /* finance (dark) */
+    .dark { background:#111827; color:#f3f4f6; padding:128px 0; }
+    .dark .mono { color:#9ca3af; }
+    .dark .h2 .purple { color:var(--purple-lt); }
+    .dark .tray { background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.1); }
+    .dark .mac { box-shadow:0 0 0 1px #000,inset 0 0 0 1px rgba(255,255,255,.12),0 30px 80px -20px rgba(0,0,0,.7); }
+    .trace-lead { margin:28px 0 0; max-width:36em; font-size:1.05rem; line-height:1.7; color:#c4c8d0; }
+    .inv .mac-bar .more { margin-left:auto; color:#8e8e93; font-size:12px; }
+    .inv .hl { border-radius:6px; box-shadow:0 0 0 4px oklch(58% 0.19 292 / .18); }
+    .connector { position:relative; max-width:640px; height:96px; --x:calc(14px + (100% - 28px) * .26); }
+    .connector i { position:absolute; left:var(--x); top:0; bottom:0; width:2px; background:repeating-linear-gradient(to bottom,var(--purple) 0 6px,transparent 6px 11px); }
+    .connector b { position:absolute; left:calc(var(--x) - 4px); bottom:-4px; width:10px; height:10px; background:var(--purple); }
+    .connector span { position:absolute; left:calc(var(--x) + 18px); top:50%; transform:translateY(-50%); font-family:var(--mono); font-size:12px; color:#d1d5db; white-space:nowrap; }
+    .xero { position:relative; overflow:hidden; aspect-ratio:1444/192; border-radius:10px; border:1px solid rgba(255,255,255,.14); background:#fff; box-shadow:0 30px 60px -30px rgba(0,0,0,.7); }
+    .xero .row7 { position:absolute; left:0; right:0; top:50.5%; height:24.5%; border:2px solid var(--purple); background:oklch(58% 0.19 292 / .08); }
+    .trace-facts { display:flex; flex-wrap:wrap; gap:20px 48px; margin:0; padding-top:20px; border-top:1px solid rgba(255,255,255,.16); }
+    .trace-facts dt { font-family:var(--mono); font-size:11px; color:#9ca3af; }
+    .trace-facts dd { margin:6px 0 0; font-size:1.5rem; font-weight:500; }
+    .trace-note { margin:32px 0 0; max-width:40em; font-size:14px; line-height:1.6; color:#9ca3af; }
+    .trace-note a { color:#f3f4f6; border-bottom:1px solid rgba(255,255,255,.4); }
+    .trace-note a:hover { color:var(--purple-lt); }
+
+    /* handover */
+    .handover { padding:144px 0 128px; }
+    .handover-body { display:flex; flex-wrap:wrap; gap:32px 56px; margin-top:40px; }
+    .handover-body p { flex:3 1 320px; margin:0; line-height:1.7; color:var(--muted); max-width:34em; }
+    .checklist { flex:2 1 220px; margin:0; padding:0; list-style:none; font-family:var(--mono); font-size:12px; }
+    .checklist li { padding:11px 0; border-top:1px solid rgba(17,24,39,.14); display:flex; justify-content:space-between; gap:12px; }
+    .checklist li:first-child { border-top-color:var(--ink); }
+    .checklist li:last-child { border-bottom:1px solid rgba(17,24,39,.14); }
+    .checklist li span { color:var(--muted); }
+
+    /* cta */
+    .cta { padding:96px 0; background:#f8f7f5; border-top:1px solid rgba(17,24,39,.08); }
+    .cta-body { display:flex; flex-wrap:wrap; gap:28px 56px; align-items:flex-end; justify-content:space-between; }
+    .cta-body > div { flex:1 1 360px; min-width:0; }
+    .cta h2 { margin:0; font-size:clamp(1.8rem,3.4vw,2.6rem); font-weight:700; line-height:1.1; text-transform:lowercase; }
+    .cta p { margin:16px 0 0; max-width:32em; line-height:1.65; color:var(--muted); }
+    .cta-btn { display:inline-flex; align-items:center; gap:14px; min-height:52px; padding:0 26px; background:var(--ink); color:#fff; border-radius:6px; font-weight:600; transition:background .15s ease; }
+    .cta-btn:hover { background:var(--purple-dk); color:#fff; }
+
+    .site-footer { border-top:1px solid var(--line); padding:32px 0; }
+    .footer-inner { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+    .footer-inner img { width:auto; height:36px; }
+    .footer-inner p { margin:0; color:var(--muted); font-size:13px; }
+
+    @media (max-width:768px) {
+      .nav-inner { justify-content:flex-end; padding:0 20px; }
+      .nav-list { display:none; }
+      .mobile-nav { display:block; position:relative; }
+      .mobile-nav summary { display:flex; align-items:center; justify-content:center; width:44px; height:44px; cursor:pointer; list-style:none; border-radius:8px; }
+      .mobile-nav summary::-webkit-details-marker { display:none; }
+      .mobile-nav svg { width:24px; height:24px; }
+      .mobile-links { position:absolute; top:52px; right:-20px; width:min(320px,100vw); padding:10px 24px; margin:0; border:1px solid var(--line); background:#fff; list-style:none; box-shadow:0 12px 28px rgba(0,0,0,.09); }
+      .mobile-links li { border-bottom:1px solid var(--line); }
+      .mobile-links li:last-child { border-bottom:0; }
+      .mobile-links a { display:block; padding:15px 4px; }
+    }
+    @media (max-width:699px) {
+      .wrap { padding:0 20px; }
+      .hs { width:24px; height:24px; font-size:16px; }
+      .pill { max-width:72%; padding:5px 10px; border-radius:10px; font-size:11px; line-height:1.35; white-space:normal; }
+      .pill.long { width:72%; padding:6px 10px; }
+      .navcard { display:none; }
+      .tt-scroll { aspect-ratio:auto; overflow-y:visible; }
+      .scroll-hint { display:none; }
+      .mac-nav .sb-icon, .newtab, .share { display:none; }
+      .mac-nav, .tab { margin-left:12px; }
+    }
+    @media (prefers-reduced-motion:reduce) {
+      html { scroll-behavior:auto; }
+      *,*::before,*::after { transition-duration:.01ms !important; }
+    }
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Portfolio","item":"https://dannymaddock.com/portfolio/"},{"@type":"ListItem","position":2,"name":"Airtable Operations and Finance System","item":"https://dannymaddock.com/portfolio/airtable-operations-and-finance/"}]},{"@type":"Article","headline":"Airtable Operations and Finance System","description":"A case study of a client-owned Airtable system for an alternative provision school's operations and finance across four campuses.","author":{"@type":"Person","name":"Danny Maddock","url":"https://dannymaddock.com/"},"mainEntityOfPage":"https://dannymaddock.com/portfolio/airtable-operations-and-finance/"}]}
+  </script>
+  <script src="/portfolio/airtable-operations-and-finance/case-study.js" defer></script>
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="dac5d32b-0af2-4e4a-9d23-ffa6eaa5a9c3"></script>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to content</a>
+  <nav class="site-nav" aria-label="Main navigation">
+    <div class="nav-inner">
+      <ul class="nav-list">
+        <li><a href="/">Home</a></li><li><a href="/about/">About</a></li><li><a href="/portfolio/" aria-current="location">Portfolio</a></li><li><a href="/services/">Services</a></li><li><a href="/contact/">Contact</a></li>
+      </ul>
+      <details class="mobile-nav">
+        <summary aria-label="Toggle navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg></summary>
+        <ul class="mobile-links">
+          <li><a href="/">Home</a></li><li><a href="/about/">About</a></li><li><a href="/portfolio/" aria-current="location">Portfolio</a></li><li><a href="/services/">Services</a></li><li><a href="/contact/">Contact</a></li>
+        </ul>
+      </details>
+    </div>
+  </nav>
+
+  <main id="main-content">
+    <!-- HERO -->
+    <header class="hero">
+      <div class="wrap">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/portfolio/">Portfolio</a><span aria-hidden="true">/</span><span>Airtable Operations and Finance System</span></nav>
+
+        <div class="row" style="margin-top:56px">
+          <div class="rail hero-rail">
+            <div class="mono">// project case study</div>
+            <div aria-hidden="true">
+              <div class="pile">
+                <div class="sheet" style="left:0;top:20px;transform:rotate(-7deg);z-index:1"></div>
+                <div class="sheet" style="left:22px;top:4px;transform:rotate(4deg);z-index:2"></div>
+                <div class="sheet" style="left:44px;top:26px;transform:rotate(-2deg);z-index:3"></div>
+                <div class="sheet" style="left:10px;top:36px;transform:rotate(9deg);z-index:4"></div>
+                <div class="sheet" style="left:34px;top:14px;transform:rotate(-11deg);z-index:5"></div>
+              </div>
+              <div class="mono before-list">// before<br><span>students_master.xlsx<br>staff_v2.xlsx<br>timetable_FINAL.xlsx<br>pay (copy).xlsx<br>+ 8 more</span></div>
+            </div>
+          </div>
+          <div class="content">
+            <h1>from 12+ spreadsheets to <span class="purple">one connected system</span></h1>
+            <div class="hero-meta">
+              <p class="intro">An alternative provision school swapped its patchwork of disconnected files for one Airtable system for scheduling, sessions, invoicing and staff pay — across four campuses, owned and run by the school itself.</p>
+              <dl class="facts">
+                <dt>client</dt><dd>Alternative provision school</dd>
+                <dt>sites</dt><dd>4 campuses</dd>
+                <dt>students</dt><dd>70+ in term planning</dd>
+                <dt>platform</dt><dd>Airtable, client-owned</dd>
+                <dt>users</dt><dd>Operations, finance, management</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <!-- stop 01 -->
+        <div class="row" style="margin-top:80px">
+          <div class="rail">
+            <div class="mono" style="margin-bottom:14px">// 01 walkthrough</div>
+            <div class="stop-label"><span>Operations /<br>Student Pipeline</span></div>
+          </div>
+          <div class="content">
+            <h2 class="stop-title">Enquiry to exit, in one pipeline</h2>
+            <p class="stop-copy">Enquiries, onboarding, active students, unsuccessful referrals and exited students share one lifecycle view, with a tab per campus. Open any card and the student’s record carries everything linked to them. The sidebar holds four role-based interfaces over the same base.</p>
+          </div>
+        </div>
+        <figure id="fig-01" style="margin:36px 0 0;scroll-margin-top:80px">
+          <div class="tray">
+            <div class="navpop" data-show="nav" aria-hidden="true">
+              <div class="navpop-shot">
+                <img class="is-on" src="/airtable-ops-side-bar-1.webp" alt="" width="352" height="724" style="width:100%">
+                <img src="/airtable-ops-side-bar-2.webp" alt="" width="349" height="721" loading="lazy" style="width:99.15%">
+                <img src="/airtable-ops-side-bar-3.webp" alt="" width="295" height="832" loading="lazy" style="width:83.81%">
+                <img src="/airtable-ops-side-bar-4.webp" alt="" width="292" height="520" loading="lazy" style="width:82.95%">
+              </div>
+              <div class="navcard">
+                <div class="navcard-num">interface <span data-nav="num">1</span> of 4</div>
+                <div class="navcard-name" data-nav="name">Operations</div>
+                <div class="navcard-desc" data-nav="desc">6 pages — a timetable per campus, the farm school diary and the student pipeline.</div>
+                <div class="navcard-bars"><span class="is-on"></span><span></span><span></span><span></span></div>
+                <div class="navcard-foot">29 pages · one base underneath</div>
+              </div>
+            </div>
+
+            <div class="mac">
+              <div class="mac-bar">
+                <span class="lights"><i></i><i></i><i></i></span>
+                <span class="mac-nav"><span class="sb-icon"></span><span>‹</span><span class="dim">›</span></span>
+                <span class="tab"><img src="/airtable.svg" alt=""><span>Ops &amp; Finance System — Student Pipeline</span></span>
+                <span class="newtab">+</span>
+                <span class="mac-right"><span class="share">Share</span><span class="more">···</span></span>
+              </div>
+              <div class="screen" style="aspect-ratio:1912/865">
+                <img src="/airtable-ops-01-student-pipeline.webp" width="1912" height="865" alt="Airtable student pipeline with enquiry, onboarding, active, not proceeded and exited columns" fetchpriority="high" decoding="async" style="display:block;width:100%;height:100%;object-fit:cover;object-position:left top">
+                <div class="pop" data-show="record" style="left:2%;top:3%;width:58%" aria-hidden="true">
+                  <div class="mac mini">
+                    <div class="mac-bar">
+                      <span class="lights"><i></i><i></i><i></i></span>
+                      <span class="mac-nav"><span>‹</span><span class="dim">›</span></span>
+                      <span class="tab"><img src="/airtable.svg" alt=""><span>Student details view — Nell Rourke</span></span>
+                      <span class="more">···</span>
+                    </div>
+                    <div class="screen crop" style="aspect-ratio:714/480">
+                      <img src="/airtable-ops-student-details.webp" alt="" width="1120" height="924" loading="lazy" style="left:-26.05%;top:-8.33%;width:156.9%">
+                    </div>
+                  </div>
+                </div>
+                <div class="hl fade" data-show="campus" style="left:15.4%;top:6%;width:26.4%;height:6.4%;border-radius:6px"></div>
+                <div class="pill fade" data-show="campus" style="left:15.4%;top:14.4%">Tabs per campus for filtered views</div>
+                <button type="button" class="hs" data-hot="nav" aria-label="Show interfaces in the sidebar" style="left:10.5%;top:64%">+</button>
+                <button type="button" class="hs" data-hot="campus" data-hide-on="record nav" aria-label="Show campus views" style="left:45%;top:9.8%">+</button>
+                <button type="button" class="hs" data-hot="record" aria-label="Open student details view" style="left:60.8%;top:65.3%">+</button>
+              </div>
+            </div>
+          </div>
+          <figcaption class="hint">
+            <span><span class="verb-hover">hover</span><span class="verb-touch">tap</span> <span class="hint-dot" aria-hidden="true">+</span> to look inside</span>
+            <span class="fictional">all names, dates and values are fictional</span>
+          </figcaption>
+        </figure>
+      </div>
+    </header>
+
+    <!-- WALKTHROUGH -->
+    <section aria-label="Walkthrough">
+      <div class="wrap">
+        <!-- stop 02 -->
+        <div class="row" style="margin-top:120px">
+          <div class="rail"><div class="stop-label"><span>Operations /<br>Campus Timetable</span></div></div>
+          <div class="content">
+            <h2 class="stop-title">The session at the centre</h2>
+            <p class="stop-copy">Every booking is a session record linking student, staff, attendance and staffing. Student sessions and staff coverage sit on one page — scroll inside the window to see both, so a gap in cover shows up next to the session it affects.</p>
+          </div>
+        </div>
+        <figure style="margin:48px 0 0">
+          <div class="tray warm">
+            <div class="mac">
+              <div class="mac-bar">
+                <span class="lights"><i></i><i></i><i></i></span>
+                <span class="mac-nav"><span class="sb-icon"></span><span>‹</span><span class="dim">›</span></span>
+                <span class="tab"><img src="/airtable.svg" alt=""><span>Ops &amp; Finance System — Oakridge Timetable</span></span>
+                <span class="newtab">+</span>
+                <span class="mac-right"><span class="share">Share</span><span class="more">···</span></span>
+              </div>
+              <div class="tt">
+                <div class="tt-scroll" tabindex="0" aria-label="Student sessions and staff timetable, scrollable">
+                  <div class="screen crop" style="aspect-ratio:1490/760">
+                    <img src="/airtable-ops-student-sessions.webp" width="1909" height="856" alt="AM Sessions – Oakridge week view; each booking shows student and staff member" loading="lazy" style="left:-26.2%;top:-9.2%;width:128.1%">
+                    <div class="pop" data-show="session" style="left:46%;top:2%;width:46%" aria-hidden="true">
+                      <div class="mac mini">
+                        <div class="mac-bar">
+                          <span class="lights"><i></i><i></i><i></i></span>
+                          <span class="mac-nav"><span>‹</span><span class="dim">›</span></span>
+                          <span class="tab"><img src="/airtable.svg" alt=""><span>Session record — Poppy W. · Karen S.</span></span>
+                          <span class="more">···</span>
+                        </div>
+                        <div class="screen crop" style="aspect-ratio:710/630">
+                          <img src="/airtable-ops-session-detail-2.webp" alt="" width="813" height="678" loading="lazy" style="left:-8.45%;top:-3.17%;width:114.5%">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="hl fade" data-show="gap" style="left:59.6%;top:61.4%;width:18%;height:4.9%"></div>
+                    <div class="pill fade" data-show="gap" style="right:22.5%;top:68.5%">Student booked, awaiting staff allocation — shows in amber</div>
+                    <button type="button" class="hs" data-hot="session" aria-label="Open session record" style="left:38.4%;top:37.9%">+</button>
+                    <button type="button" class="hs" data-hot="gap" data-hide-on="session" aria-label="Show unstaffed session" style="left:77.5%;top:63.6%">+</button>
+                  </div>
+                  <div class="tt-divider"></div>
+                  <div class="screen crop" style="aspect-ratio:1488/760">
+                    <img src="/airtable-ops-staff-timetable.webp" width="1912" height="862" alt="AM Staff – Oakridge week view showing staff coverage for the same week" loading="lazy" style="left:-26.2%;top:-10.5%;width:128.5%">
+                    <div class="hl fade" data-show="karen" style="left:22.4%;top:40.9%;width:18.3%;height:4.6%"></div>
+                    <div class="pill long fade" data-show="karen" style="left:22.4%;top:47.6%">Red shows the staff member is booked for a session — in this case Karen S. is assigned to Poppy W. as shown above.</div>
+                    <div class="hl fade" data-show="avail" style="left:59.4%;top:61.4%;width:18.3%;height:4.6%"></div>
+                    <div class="pill fade" data-show="avail" style="right:22.3%;top:68.1%">Green cards show staff available for allocation</div>
+                    <button type="button" class="hs" data-hot="karen" aria-label="Show Karen S. staffing record" style="left:38.3%;top:43.2%">+</button>
+                    <button type="button" class="hs" data-hot="avail" aria-label="Show available staff" style="left:75.5%;top:63.7%">+</button>
+                  </div>
+                </div>
+                <div class="scroll-hint" aria-hidden="true">scroll for staff timetable ↓</div>
+              </div>
+            </div>
+          </div>
+          <figcaption class="hint" style="justify-content:flex-start">
+            <span><span class="verb-hover">hover</span><span class="verb-touch">tap</span> <span class="hint-dot" aria-hidden="true">+</span> to look inside · scroll for staff</span>
+          </figcaption>
+        </figure>
+
+        <!-- stop 03 -->
+        <div class="row" style="margin-top:112px;padding-bottom:128px">
+          <div class="rail"><div class="stop-label"><span>Buttons /<br>Session Generation</span></div></div>
+          <div class="content">
+            <div class="gen-head">
+              <div class="gen-num" id="gen-num">1,100+</div>
+              <div style="flex:1 1 280px;min-width:0">
+                <h2 class="stop-title">session records, created instantly</h2>
+                <p class="stop-copy" style="max-width:28em">Choose a term and press the button. More than 1,100 session records are created instantly — and rerunning it creates only what's missing, never duplicates.</p>
+              </div>
+            </div>
+            <div class="gen-panel">
+              <div class="gen-card gen-ctrl">
+                <div class="mono">Buttons / Sessions</div>
+                <div>
+                  <div class="gen-field-label">Term</div>
+                  <div class="gen-select">Term 1 2026/27 <span aria-hidden="true">⌄</span></div>
+                </div>
+                <button type="button" class="gen-btn" id="gen-btn">Generate sessions</button>
+                <div class="gen-log" aria-live="polite"><span class="gen-dot" id="gen-dot"></span><span id="gen-log">ready · press to generate the term</span></div>
+              </div>
+              <div class="gen-card gen-grid-card" aria-hidden="true">
+                <div class="mono gen-grid-head"><span>AM Sessions – Oakridge</span><span id="gen-week">Term 1 · empty</span></div>
+                <div class="gen-days"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span></div>
+                <div class="gen-cells" id="gen-cells"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINANCE TRACE -->
+    <section class="dark" aria-labelledby="trace-title">
+      <div class="wrap">
+        <div class="row">
+          <div class="rail" style="padding-top:10px"><div class="mono">// 02 finance</div></div>
+          <div class="content">
+            <h2 class="h2" id="trace-title">one student, one term, traced to the <span class="purple">export row</span></h2>
+            <p class="trace-lead">Confirmed sessions flow into invoice review, grouped by referrer. The same values reappear, untouched, in the Xero-ready export. Follow one student — Lysander Fenwick — from invoice review to export row.</p>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:80px">
+          <div class="rail"><div class="stop-label"><span>Finance /<br>Invoice Review</span></div></div>
+          <div class="content">
+            <figure class="inv" style="margin:0;max-width:640px">
+              <div class="tray">
+                <div class="mac">
+                  <div class="mac-bar">
+                    <span class="lights"><i></i><i></i><i></i></span>
+                    <span class="mac-nav"><span>‹</span><span class="dim">›</span></span>
+                    <span class="tab"><img src="/airtable.svg" alt=""><span>Invoice Review — LyFe</span></span>
+                    <span class="more">···</span>
+                  </div>
+                  <div class="screen crop" style="aspect-ratio:919/922">
+                    <img src="/airtable-ops-invoice-review-3.webp" width="1779" height="922" alt="Invoice record LyFe for Lysander Fenwick: 2 sessions per week, Tier 2, 7 term weeks; invoice line 14.0 × £175.00 = £2,450.00; total £2,450.00" loading="lazy" style="left:-93.6%;top:0;width:193.6%">
+                    <div class="hl" style="left:4.4%;top:1.6%;width:11%;height:5.6%"></div>
+                    <div class="hl" style="left:4.4%;top:83.6%;width:42.6%;height:7.6%"></div>
+                  </div>
+                </div>
+              </div>
+            </figure>
+            <div class="connector" aria-hidden="true"><i></i><b></b><span>£2,450.00 · ref LyFe → export row 7</span></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="rail"><div class="stop-label"><span>Finance /<br>Xero Invoice Export</span></div></div>
+          <div class="content">
+            <div class="xero crop">
+              <img src="/airtable-ops-05-xero-export-review.webp" width="1915" height="858" alt="Xero invoice export review rows; row 7 shows Bracken Manor House School, invoice 633, reference LyFe, dated 23/10/2026, due 22/11/2026" loading="lazy" style="left:-24.65%;top:-204.7%;width:132.6%">
+              <div class="row7"></div>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="margin-top:48px">
+          <div class="rail"></div>
+          <div class="content">
+            <dl class="trace-facts">
+              <div><dt>invoice</dt><dd>633</dd></div>
+              <div><dt>reference</dt><dd>LyFe</dd></div>
+              <div><dt>due</dt><dd>22/11/2026</dd></div>
+              <div><dt>total</dt><dd>£2,450.00</dd></div>
+            </dl>
+            <p class="trace-note">Xero-compatible export preparation for review and manual CSV import — there is no live Xero API integration. <a href="/airtable-ops-invoice-review-3.webp" target="_blank" rel="noopener">Invoice review ↗</a> <a href="/airtable-ops-05-xero-export-review.webp" target="_blank" rel="noopener" style="margin-left:12px">Export review ↗</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HANDOVER -->
+    <section class="handover" aria-labelledby="handover-title">
+      <div class="wrap">
+        <div class="row">
+          <div class="rail" style="padding-top:12px"><div class="mono">// 03 handover</div></div>
+          <div class="content">
+            <h2 class="h2" id="handover-title">built to belong to the <span class="purple">school</span>, not to me</h2>
+            <div class="handover-body">
+              <p>The finished system is owned and operated by the school. It uses no proprietary add-ons and doesn't need a developer on hand to keep running. Role-focused interfaces give operations, finance and management the views they need, while the records underneath stay connected.</p>
+              <ul class="checklist">
+                <li>client-owned<span aria-hidden="true">✓</span></li>
+                <li>no proprietary add-ons<span aria-hidden="true">✓</span></li>
+                <li>runs independently<span aria-hidden="true">✓</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta" aria-labelledby="cta-title">
+      <div class="wrap">
+        <div class="row">
+          <div class="rail" style="min-height:0"></div>
+          <div class="content cta-body">
+            <div>
+              <h2 id="cta-title">have a <span class="purple">workflow</span> like this?</h2>
+              <p>Tell me how your team manages its records, handoffs and financial checks today. We'll work out what a connected system should cover.</p>
+            </div>
+            <a class="cta-btn" href="/contact/">Let's talk <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="wrap footer-inner"><img src="/blk-bx-logo.svg.svg" alt="BLK BX" width="113" height="36" loading="lazy"><p>© 2026 BLK BX. Built with precision.</p></div></footer>
+</body>
+</html>
